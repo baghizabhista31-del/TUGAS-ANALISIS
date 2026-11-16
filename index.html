@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080b14">
+  <meta name="description" content="Portal tugas dan materi kuliah UMC Semester 5">
+  <title>UMC-Semester 5 | Portal Tugas & Materi</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <i class="fas fa-cubes"></i>
+      Universitas Muhammadiyah Cirebon
+    </div>
+
+    <div class="topbar-actions">
+      <button type="button" class="topbar-profile"
+        onclick="toggleProfile()"
+        aria-label="Buka profil pengguna"
+        aria-controls="profilePopup">
+
+        <div class="profile-info-text">
+          <span class="profile-name">Baghiz Abhista</span>
+          <span class="profile-role" id="roleLabel">240511132-TI24D</span>
+        </div>
+
+        <div class="avatar">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+      </button>
+    </div>
+  </header>
+
+
+  <!-- POPUP PROFIL -->
+  <div id="profilePopup" class="profile-popup hidden">
+    <div class="profile-header-bg">
+      <div class="profile-avatar-large">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+    </div>
+
+    <div class="profile-body">
+      <h2>Baghiz Abhista Aisal</h2>
+      <p class="prodi">Pengumpulan tugas</p>
+
+      <div class="profile-grid">
+        <div class="profile-item">
+          <span>NIM</span>
+          <strong>240511132</strong>
+        </div>
+
+        <div class="profile-item">
+          <span>Kelas</span>
+          <strong>TI24D</strong>
+        </div>
+
+        <div class="profile-item">
+          <span>Email</span>
+          <strong>baghiz@email.com</strong>
+        </div>
+
+        <div class="profile-item">
+          <span>Kontak</span>
+          <strong>+62 812-3456-7890</strong>
+        </div>
+      </div>
+
+      <button class="btn-primary w-100"
+        style="margin-top:20px;"
+        onclick="toggleProfile()">
+        Tutup Profil
+      </button>
+    </div>
+  </div>
+
+
+  <!-- LAYOUT UTAMA -->
+  <div class="app">
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="page">
+
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Assalamualaikum, BAGHIZ ABHISTA AISAL</h2>
+            <p id="welcomeSub"></p>
+          </div>
+
+          <div class="welcome-illustration">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+        </div>
+
+
+        <!-- PERINGATAN TUGAS -->
+        <div id="alertPanel" class="alert-panel hidden">
+          <div class="alert-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+
+          <div class="alert-body">
+            <h3>⚠️ Peringatan: Tugas Belum Terkumpul!</h3>
+            <ul id="alertList"></ul>
+          </div>
+        </div>
+
+
+        <!-- STATISTIK -->
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div>
+              <p class="stat-label">Total Tugas</p>
+              <h3 id="statTotalTugas">0</h3>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div>
+              <p class="stat-label">Terkumpul</p>
+              <h3 id="statSelesai">0</h3>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <p class="stat-label">Belum Terkumpul</p>
+              <h3 id="statBelum">0</h3>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <i class="fas fa-book"></i>
+            </div>
+            <div>
+              <p class="stat-label">Total Matkul</p>
+              <h3 id="statMatkul">0</h3>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon pink">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div>
+              <p class="stat-label">Total Materi</p>
+              <h3 id="statMateri">0</h3>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- GRAFIK DAN DEADLINE -->
+        <div class="dashboard-grid">
+
+          <div class="card">
+            <h3>
+              <i class="fas fa-chart-pie"></i>
+              Progress Tugas
+            </h3>
+
+            <div class="chart-container">
+              <canvas id="chartProgress"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>
+              <i class="fas fa-fire" style="color:var(--danger);"></i>
+              Deadline Terdekat
+            </h3>
+
+            <ul class="deadline-list" id="deadlineList"></ul>
+          </div>
+
+        </div>
+
+
+        <!-- PROGRESS PER MATKUL -->
+        <div class="card">
+          <h3>
+            <i class="fas fa-list-check"></i>
+            Progress Per Mata Kuliah
+          </h3>
+
+          <div id="progressPerMatkul" class="progress-matkul-grid"></div>
+        </div>
+
+      </section>
+
+
+      <!-- MATA KULIAH DAN TUGAS -->
+      <section id="page-matakuliah" class="page hidden">
+
+        <div class="card-header" style="margin-bottom:24px;">
+
+          <h2 class="page-title" style="margin:0;">
+            Mata Kuliah & Tugas
+          </h2>
+
+          <div class="action-bar">
+
+            <button class="btn-secondary" onclick="exportPDF()">
+              <i class="fas fa-print"></i>
+              Cetak Laporan
+            </button>
+
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari tugas/matkul..."
+                oninput="renderMatkul()">
+            </div>
+
+            <select
+              id="filterStatus"
+              class="filter-select"
+              onchange="renderMatkul()">
+
+              <option value="all">Semua Tugas</option>
+              <option value="belum">Belum Terkumpul</option>
+              <option value="selesai">Terkumpul</option>
+              <option value="terlambat">Terlambat</option>
+            </select>
+
+            <button
+              id="btnTambahMatkul"
+              class="btn-primary"
+              onclick="bukaModalMatkul()">
+
+              <i class="fas fa-plus"></i>
+              Tambah Matkul
+            </button>
+
+          </div>
+        </div>
+
+        <div id="gridMatkul" class="matkul-grid"></div>
+
+      </section>
+
+
+      <!-- MATERI KULIAH -->
+      <section id="page-materi" class="page hidden">
+
+        <div class="card-header" style="margin-bottom:24px;">
+
+          <h2 class="page-title" style="margin:0;">
+            Materi Kuliah
+          </h2>
+
+          <div class="action-bar">
+
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="searchMateri"
+                placeholder="Cari materi..."
+                oninput="renderMateri()">
+            </div>
+
+            <select
+              id="filterMatkulMateri"
+              class="filter-select"
+              onchange="renderMateri()">
+
+              <option value="all">Semua Matkul</option>
+            </select>
+
+            <button class="btn-primary" onclick="bukaModalMateri()">
+              <i class="fas fa-plus"></i>
+              Tambah Materi
+            </button>
+
+          </div>
+        </div>
+
+        <div id="gridMateri" class="materi-grid"></div>
+
+      </section>
+
+    </main>
+
+
+    <!-- SIDEBAR DESKTOP -->
+    <aside class="sidebar sidebar-right">
+
+      <nav class="sidebar-nav">
+
+        <a href="#dashboard"
+          class="nav-item active"
+          data-page="dashboard"
+          onclick="switchPage('dashboard'); return false;">
+
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#matakuliah"
+          class="nav-item"
+          data-page="matakuliah"
+          onclick="switchPage('matakuliah'); return false;">
+
+          <i class="fas fa-book-open"></i>
+          <span>Mata Kuliah & Tugas</span>
+        </a>
+
+        <a href="#materi"
+          class="nav-item"
+          data-page="materi"
+          onclick="switchPage('materi'); return false;">
+
+          <i class="fas fa-file-alt"></i>
+          <span>Materi Kuliah</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>© 2026 UMC-Semester 5</p>
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- NAVIGASI KHUSUS MOBILE -->
+  <nav class="mobile-nav" aria-label="Navigasi utama mobile">
+
+    <a href="#dashboard"
+      class="nav-item active"
+      data-page="dashboard"
+      aria-label="Dashboard"
+      onclick="switchPage('dashboard'); return false;">
+
+      <i class="fas fa-chart-pie"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a href="#matakuliah"
+      class="nav-item"
+      data-page="matakuliah"
+      aria-label="Mata Kuliah dan Tugas"
+      onclick="switchPage('matakuliah'); return false;">
+
+      <i class="fas fa-book-open"></i>
+      <span>Tugas</span>
+    </a>
+
+    <a href="#materi"
+      class="nav-item"
+      data-page="materi"
+      aria-label="Materi Kuliah"
+      onclick="switchPage('materi'); return false;">
+
+      <i class="fas fa-file-alt"></i>
+      <span>Materi</span>
+    </a>
+
+  </nav>
+
+
+  <!-- MODAL TAMBAH TUGAS -->
+  <div id="modalTugas" class="modal hidden">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h3 id="modalTugasTitle">Tambah Tugas</h3>
+
+        <button type="button"
+          class="modal-close"
+          onclick="tutupModal('modalTugas')">
+          &times;
+        </button>
+      </div>
+
+      <form id="formTugas">
+
+        <input type="hidden" id="tugasId">
+        <input type="hidden" id="tugasMatkul">
+        <input type="hidden" id="tugasPdfData">
+
+        <div class="form-group">
+          <label>Nama Tugas</label>
+          <input
+            type="text"
+            id="tugasNama"
+            placeholder="Contoh: Membuat Web Portofolio"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Tenggat Waktu (Deadline)</label>
+          <input
+            type="datetime-local"
+            id="tugasDeadline"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>
+            Upload File Tugas (PDF)
+            <span style="font-size:11px;color:var(--danger);">
+              (Wajib untuk status Terkumpul)
+            </span>
+          </label>
+
+          <input type="file" id="tugasFilePdf" accept=".pdf">
+
+          <small
+            id="pdfInfo"
+            style="color:var(--success);font-size:12px;display:none;margin-top:4px;">
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Link Pengumpulan (Opsional)</label>
+          <input
+            type="url"
+            id="tugasLink"
+            placeholder="https://drive.google.com/...">
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="tutupModal('modalTugas')">
+            Batal
+          </button>
+
+          <button type="submit" class="btn-primary">
+            Simpan Tugas
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL MATA KULIAH -->
+  <div id="modalMatkul" class="modal hidden">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h3 id="modalMatkulTitle">Tambah Mata Kuliah</h3>
+
+        <button type="button"
+          class="modal-close"
+          onclick="tutupModal('modalMatkul')">
+          &times;
+        </button>
+      </div>
+
+      <form id="formMatkul">
+
+        <input type="hidden" id="matkulId">
+
+        <div class="form-group">
+          <label>Nama Mata Kuliah</label>
+          <input
+            type="text"
+            id="matkulNama"
+            placeholder="Contoh: Pemrograman Web"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Dosen Pengampu</label>
+          <input
+            type="text"
+            id="matkulDosen"
+            placeholder="Contoh: Dr. Budi Santoso">
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="tutupModal('modalMatkul')">
+            Batal
+          </button>
+
+          <button type="submit" class="btn-primary">
+            Simpan Matkul
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL MATERI -->
+  <div id="modalMateri" class="modal hidden">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h3 id="modalMateriTitle">Tambah Materi</h3>
+
+        <button type="button"
+          class="modal-close"
+          onclick="tutupModal('modalMateri')">
+          &times;
+        </button>
+      </div>
+
+      <form id="formMateri">
+
+        <input type="hidden" id="materiId">
+        <input type="hidden" id="materiFileData">
+
+        <div class="form-group">
+          <label>Mata Kuliah</label>
+          <select id="materiMatkul" required></select>
+        </div>
+
+        <div class="form-group">
+          <label>Judul Materi</label>
+          <input
+            type="text"
+            id="materiJudul"
+            placeholder="Contoh: Pengenalan HTML"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi Singkat</label>
+          <textarea
+            id="materiDeskripsi"
+            rows="3"
+            placeholder="Ringkasan materi..."
+            style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--input-bg);color:var(--text);resize:vertical;">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Upload PDF Materi (Opsional)</label>
+          <input type="file" id="materiFilePdf" accept=".pdf">
+
+          <small
+            id="materiPdfInfo"
+            style="color:var(--success);font-size:12px;display:none;margin-top:4px;">
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Link Materi (Opsional)</label>
+          <input
+            type="url"
+            id="materiLink"
+            placeholder="https://...">
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="tutupModal('modalMateri')">
+            Batal
+          </button>
+
+          <button type="submit" class="btn-primary">
+            Simpan Materi
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL DETAIL TUGAS -->
+  <div id="modalDetail" class="modal hidden">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h3>Detail Tugas</h3>
+
+        <button type="button"
+          class="modal-close"
+          onclick="tutupModal('modalDetail')">
+          &times;
+        </button>
+      </div>
+
+      <div
+        id="detailContent"
+        style="padding:20px 24px;line-height:1.8;">
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn-secondary"
+          onclick="tutupModal('modalDetail')">
+          Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast"></div>
+
+
+  <!-- JAVASCRIPT LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- JAVASCRIPT PROJECT -->
+  <script src="script.js"></script>
+
+</body>
+</html>
